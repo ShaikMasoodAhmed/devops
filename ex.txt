@@ -1,0 +1,32 @@
+import requests
+
+# Replace these variables with your Azure DevOps organization and personal access token
+organization = "your_organization_name"
+project_name = "your_project_name"
+repository_name = "your_repository_name"
+personal_access_token = "your_personal_access_token"
+
+# Azure DevOps REST API URL
+url = f"https://dev.azure.com/{organization}/{project_name}/_apis/git/repositories?api-version=7.1-preview.1"
+
+# Repository data
+data = {
+    "name": repository_name,
+    "project": {
+        "id": project_name
+    }
+}
+
+# Headers for the request
+headers = {
+    "Content-Type": "application/json"
+}
+
+# Make the request
+response = requests.post(url, json=data, headers=headers, auth=("", personal_access_token))
+
+# Check the response
+if response.status_code == 201:
+    print("Repository created successfully.")
+else:
+    print(f"Failed to create repository. Status code: {response.status_code}, Response: {response.text}")
